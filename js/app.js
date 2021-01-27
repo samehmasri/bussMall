@@ -6,6 +6,10 @@ var attempt = 25;
 
 var userAttempt = 1;
 
+var x1;
+var x2;
+var x3;
+
 function batata(name, path) {
     this.productName = name;
     this.productPath = path;
@@ -57,6 +61,19 @@ function render() {
     }
     while (imgOne === imgTwo || imgOne === imgThree || imgTwo === imgThree);
 
+    x1 = imgOne;
+    x2 = imgTwo;
+    x3 = imgThree;
+
+    do {
+        imgOne = getRandom();
+        imgTwo = getRandom();
+        imgThree = getRandom();
+
+    } while (imgOne === x1 || imgOne === x2 || imgOne === x3 || imgOne === imgTwo || imgOne === imgThree || imgTwo === x1 || imgTwo === x2 || imgTwo === x3 || imgTwo === imgThree
+    || imgThree === x1 || imgThree === x2 || imgThree === x3);
+
+
     img1.src = batata.prototype.allProducts[imgOne].productPath;
     img2.src = batata.prototype.allProducts[imgTwo].productPath;
     img3.src = batata.prototype.allProducts[imgThree].productPath;
@@ -78,39 +95,65 @@ function press(event) {
 
 
         if (event.target.id === 'one') {
-            
+
             userAttempt++;
             batata.prototype.allProducts[imgOne].select++;
             render();
         } else if (event.target.id === 'two') {
-            
+
             userAttempt++;
             batata.prototype.allProducts[imgTwo].select++;
             render();
-        } else if (event.target.id === 'three'){
-            
+        } else if (event.target.id === 'three') {
+
             userAttempt++;
             batata.prototype.allProducts[imgThree].select++;
             render();
         }
-    }else{
+    } else {
         result();
     }
 }
+var prodName=[];
+var voteNumbers=[];
 
-function result(){
+function result() {
     var fathi = document.getElementById('res');
     var list;
-    fathi.innerHTML='';
+    fathi.innerHTML = '';
 
-    for (var i = 0; i<batata.prototype.allProducts.length; i++){
+    for (var i = 0; i < batata.prototype.allProducts.length; i++) {
         list = document.createElement('li');
-        list.textContent = batata.prototype.allProducts[i].productName+' had '+batata.prototype.allProducts[i].select+' votes, and was seen '+batata.prototype.allProducts[i].renderTime+' times.';
+        list.textContent = batata.prototype.allProducts[i].productName + ' had ' + batata.prototype.allProducts[i].select + ' votes, and was seen ' + batata.prototype.allProducts[i].renderTime + ' times.';
         fathi.appendChild(list);
+
+        prodName.push(batata.prototype.allProducts[i].productName);
+        voteNumbers.push(batata.prototype.allProducts[i].select);
 
 
 
     }
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+
+        // The data for our dataset
+        data: {
+            labels: prodName,
+            datasets: [{
+                label: 'Vote Number',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: voteNumbers,
+            }]
+        },
+
+        // Configuration options go here
+        options: {}
+    });
 }
 
+
 render();
+
