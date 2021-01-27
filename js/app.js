@@ -90,6 +90,7 @@ img2.addEventListener('click', press);
 img3.addEventListener('click', press);
 
 function press(event) {
+    result();
     event.preventDefault();
     if (userAttempt <= attempt) {
 
@@ -111,6 +112,8 @@ function press(event) {
             render();
         }
     } else {
+        localStorage.clear('orange');
+        storage();
         result();
     }
 }
@@ -122,6 +125,11 @@ function result() {
     var list;
     fathi.innerHTML = '';
 
+    if (userAttempt <= attempt){
+        lStorage = JSON.parse(localStorage.getItem('orange'));
+        batata.prototype.allProducts = lStorage;
+    }
+
     for (var i = 0; i < batata.prototype.allProducts.length; i++) {
         list = document.createElement('li');
         list.textContent = batata.prototype.allProducts[i].productName + ' had ' + batata.prototype.allProducts[i].select + ' votes, and was seen ' + batata.prototype.allProducts[i].renderTime + ' times.';
@@ -129,8 +137,6 @@ function result() {
 
         prodName.push(batata.prototype.allProducts[i].productName);
         voteNumbers.push(batata.prototype.allProducts[i].select);
-
-
 
     }
     var ctx = document.getElementById('myChart').getContext('2d');
@@ -152,8 +158,16 @@ function result() {
         // Configuration options go here
         options: {}
     });
+
 }
 
 
 render();
+
+var lStorage;
+
+function storage (){
+    lStorage = JSON.stringify(batata.prototype.allProducts);
+    localStorage.setItem('orange',lStorage);
+}
 
