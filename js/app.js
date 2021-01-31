@@ -81,6 +81,7 @@ function render() {
     batata.prototype.allProducts[imgOne].renderTime++;
     batata.prototype.allProducts[imgTwo].renderTime++;
     batata.prototype.allProducts[imgThree].renderTime++;
+    
 }
 
 
@@ -90,8 +91,9 @@ img2.addEventListener('click', press);
 img3.addEventListener('click', press);
 
 function press(event) {
-    result();
     event.preventDefault();
+    result();
+    console.log(batata.prototype.allProducts[imgOne].select);
     if (userAttempt <= attempt) {
 
 
@@ -100,6 +102,7 @@ function press(event) {
             userAttempt++;
             batata.prototype.allProducts[imgOne].select++;
             render();
+            console.log(batata.prototype.allProducts[imgOne].select);
         } else if (event.target.id === 'two') {
 
             userAttempt++;
@@ -115,21 +118,29 @@ function press(event) {
         localStorage.clear('orange');
         storage();
         result();
+        img1.removeEventListener('click', press);
+        img2.removeEventListener('click', press);
+        img3.removeEventListener('click', press);
+        
+
     }
 }
-var prodName=[];
-var voteNumbers=[];
+var prodName = [];
+var voteNumbers = [];
+
 
 function result() {
     var fathi = document.getElementById('res');
     var list;
     fathi.innerHTML = '';
+    render();
 
-    if (userAttempt <= attempt){
+    if (userAttempt <= attempt) {
         lStorage = JSON.parse(localStorage.getItem('orange'));
         batata.prototype.allProducts = lStorage;
-    }
 
+        
+    }
     for (var i = 0; i < batata.prototype.allProducts.length; i++) {
         list = document.createElement('li');
         list.textContent = batata.prototype.allProducts[i].productName + ' had ' + batata.prototype.allProducts[i].select + ' votes, and was seen ' + batata.prototype.allProducts[i].renderTime + ' times.';
@@ -139,6 +150,7 @@ function result() {
         voteNumbers.push(batata.prototype.allProducts[i].select);
 
     }
+        
     var ctx = document.getElementById('myChart').getContext('2d');
     var chart = new Chart(ctx, {
         // The type of chart we want to create
@@ -158,7 +170,8 @@ function result() {
         // Configuration options go here
         options: {}
     });
-
+    prodName = [];
+    voteNumbers=[];
 }
 
 
@@ -166,8 +179,8 @@ render();
 
 var lStorage;
 
-function storage (){
+function storage() {
     lStorage = JSON.stringify(batata.prototype.allProducts);
-    localStorage.setItem('orange',lStorage);
+    localStorage.setItem('orange', lStorage);
 }
 
