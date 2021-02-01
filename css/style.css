@@ -21,3 +21,20 @@ li {
     font-size: larger;
     font:bolder;
 }
+
+#label {
+    
+    color: blue;
+    font-size: larger;
+    font:bolder;
+}
+
+#result-button{
+    color: blue;
+    font-size: 16px;
+}
+
+#submit{
+    color: blue;
+    font-size: 16px;
+}

@@ -10,6 +10,8 @@ var x1;
 var x2;
 var x3;
 
+
+
 function batata(name, path) {
     this.productName = name;
     this.productPath = path;
@@ -40,6 +42,22 @@ new batata('usb', '../img/usb.gif');
 new batata('water-can', '../img/water-can.jpg');
 new batata('wine-glass', '../img/wine-glass.jpg');
 
+var numberofattempts = document.getElementById('submit')
+var resultButton = document.getElementById ('result-button');
+
+numberofattempts.addEventListener('click',attempts)
+ function attempts (event){
+
+    
+     event.preventDefault();
+
+     
+     
+     attempt=document.getElementById('number').value;
+
+    
+ }
+
 var imgOne;
 var imgTwo;
 var imgThree;
@@ -53,6 +71,11 @@ var img2 = document.getElementById('two');
 var img3 = document.getElementById('three');
 
 function render() {
+
+    x1 = imgOne;
+    x2 = imgTwo;
+    x3 = imgThree;
+
     imgOne = getRandom();
 
     do {
@@ -61,9 +84,6 @@ function render() {
     }
     while (imgOne === imgTwo || imgOne === imgThree || imgTwo === imgThree);
 
-    x1 = imgOne;
-    x2 = imgTwo;
-    x3 = imgThree;
 
     do {
         imgOne = getRandom();
@@ -78,13 +98,13 @@ function render() {
     img2.src = batata.prototype.allProducts[imgTwo].productPath;
     img3.src = batata.prototype.allProducts[imgThree].productPath;
 
-    batata.prototype.allProducts[imgOne].renderTime++;
-    batata.prototype.allProducts[imgTwo].renderTime++;
-    batata.prototype.allProducts[imgThree].renderTime++;
+    // batata.prototype.allProducts[imgOne].renderTime++;
+    // batata.prototype.allProducts[imgTwo].renderTime++;
+    // batata.prototype.allProducts[imgThree].renderTime++;
     
 }
 
-
+render();
 
 img1.addEventListener('click', press);
 img2.addEventListener('click', press);
@@ -92,8 +112,7 @@ img3.addEventListener('click', press);
 
 function press(event) {
     event.preventDefault();
-    result();
-    console.log(batata.prototype.allProducts[imgOne].select);
+
     if (userAttempt <= attempt) {
 
 
@@ -102,7 +121,7 @@ function press(event) {
             userAttempt++;
             batata.prototype.allProducts[imgOne].select++;
             render();
-            console.log(batata.prototype.allProducts[imgOne].select);
+            // console.log(batata.prototype.allProducts[imgOne].select);
         } else if (event.target.id === 'two') {
 
             userAttempt++;
@@ -114,10 +133,14 @@ function press(event) {
             batata.prototype.allProducts[imgThree].select++;
             render();
         }
+        batata.prototype.allProducts[imgOne].renderTime++;
+        batata.prototype.allProducts[imgTwo].renderTime++;
+        batata.prototype.allProducts[imgThree].renderTime++;
+            render();
     } else {
         localStorage.clear('orange');
         storage();
-        result();
+        // result();
         img1.removeEventListener('click', press);
         img2.removeEventListener('click', press);
         img3.removeEventListener('click', press);
@@ -127,13 +150,19 @@ function press(event) {
 }
 var prodName = [];
 var voteNumbers = [];
+var renderTimeView=[];
+var number ; 
+
+
+
+resultButton.addEventListener('click',result)
 
 
 function result() {
-    var fathi = document.getElementById('res');
+    var fathi = document.getElementById('result-list');
     var list;
     fathi.innerHTML = '';
-    render();
+
 
     if (userAttempt <= attempt) {
         lStorage = JSON.parse(localStorage.getItem('orange'));
@@ -142,14 +171,23 @@ function result() {
         
     }
     for (var i = 0; i < batata.prototype.allProducts.length; i++) {
-        list = document.createElement('li');
-        list.textContent = batata.prototype.allProducts[i].productName + ' had ' + batata.prototype.allProducts[i].select + ' votes, and was seen ' + batata.prototype.allProducts[i].renderTime + ' times.';
-        fathi.appendChild(list);
-
+       
         prodName.push(batata.prototype.allProducts[i].productName);
         voteNumbers.push(batata.prototype.allProducts[i].select);
+        renderTimeView.push(batata.prototype.allProducts[i].renderTime);
 
     }
+
+    for (var i = 0 ; i <batata.prototype.allProducts.length ; i++){
+        number = batata.prototype.allProducts[i].renderTime;
+         if (batata.prototype.allProducts[i].renderTime===0){
+             number = 1;
+         }
+         list = document.createElement('li');
+        list.textContent = batata.prototype.allProducts[i].productName + ' had ' + batata.prototype.allProducts[i].select + ' votes, and was seen ' + batata.prototype.allProducts[i].renderTime + ' times.';
+        fathi.appendChild(list);
+ 
+ }
         
     var ctx = document.getElementById('myChart').getContext('2d');
     var chart = new Chart(ctx, {
@@ -172,10 +210,11 @@ function result() {
     });
     prodName = [];
     voteNumbers=[];
+    renderTimeView=[];
 }
 
 
-render();
+
 
 var lStorage;
 
